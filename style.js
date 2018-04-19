@@ -40,7 +40,6 @@ export default {
   },
 
   letterContainer: {
-    // flex: 1,
     width: 50,
     height: 50,
     justifyContent: 'center',
@@ -48,5 +47,22 @@ export default {
 
     borderWidth: 1,
     borderColor: black,
+  },
+
+  yellowLetter: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
+
+  yellowLetterBackground: {
+    height: '100%',
+    width: '100%',
+    backgroundColor: yellow,
+    position: 'absolute',
+  },
+
+  yellowLetterContainer: {
+    position: 'relative'
   }
 }

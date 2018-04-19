@@ -3,7 +3,7 @@ import { Text, View, Image, TouchableHighlight } from 'react-native';
 
 import style from '../../style';
 
-import Letter from '../letter/Letter';
+import YellowLetter from '../letters/YellowLetter';
 
 class Game extends Component {
   constructor(props) {
@@ -22,7 +22,7 @@ class Game extends Component {
   render() {
     return (
       <View style={[style.gameContainer]}>
-        <Letter letter='a' posX={50} posY={400} />
+        <YellowLetter letter='a' posX={50} posY={400} />
       </View>
     )
   }
