@@ -1,20 +1,33 @@
 import React, { Component } from 'react';
-import {Text, View, Image, ActivityIndicator} from 'react-native';
+import { Text, View, Image, ActivityIndicator, TouchableHighlight } from 'react-native';
 
-//STYLESHEET
 import style from '../../style';
+
+import Background from '../BackgroundGeneral';
 
 class Home extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      scores: this.props.scores
+    }
+  }
+
+  startGame = () => {
+    this.props.startGame();
   }
 
   render() {
     return (
-      <BackgroundDash>
-        <View style={style.activityBlock}>
+      <Background>
+        <View style={[style.container, style.home]}>
+          <TouchableHighlight style={[style.homeButtonTouch]} onClick={this.startGame()}>
+            <Text style={[style.homeButton]}>START</Text>
+          </TouchableHighlight>
         </View>
-      </BackgroundDash>
+      </Background>
     )
   }
 }
+
+export default Home;
