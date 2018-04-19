@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, ActivityIndicator, TouchableHighlight } from 'react-native';
+import { Text, View, Image, TouchableHighlight } from 'react-native';
 
 import style from '../../style';
 
@@ -21,7 +21,7 @@ class Home extends Component {
     return (
       <Background>
         <View style={[style.container, style.home]}>
-          <TouchableHighlight style={[style.homeButtonTouch]} onClick={this.startGame()}>
+          <TouchableHighlight style={[style.homeButtonTouch]} onPress={this.startGame}>
             <Text style={[style.homeButton]}>START</Text>
           </TouchableHighlight>
         </View>
