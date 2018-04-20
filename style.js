@@ -1,8 +1,9 @@
-const white     = '#FFFFFF';
 const black     = '#000000';
-const red       = '#FF0000';
 const blue      = '#0000FF';
+const red       = '#FF0000';
 const turquoise = '#00E5EE';
+const white     = '#FFFFFF';
+const yellow    = '#F6AB00';
 
 export default {
   home: {
@@ -32,4 +33,20 @@ export default {
     flex: 1,
     backgroundColor: turquoise
   },
+
+  letter: {
+    color: white,
+    fontSize: 25,
+  },
+
+  letterContainer: {
+    // flex: 1,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    borderWidth: 1,
+    borderColor: black,
+  }
 }

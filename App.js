@@ -15,7 +15,7 @@ export default class App extends React.Component {
   changeComponent = (component) => {
     this.setState({
       componentSelected: component    
-    })
+    });
   }
 
   startGame = () => {
