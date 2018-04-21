@@ -1,8 +1,9 @@
-const white     = '#FFFFFF';
 const black     = '#000000';
-const red       = '#FF0000';
 const blue      = '#0000FF';
+const red       = '#FF0000';
 const turquoise = '#00E5EE';
+const white     = '#FFFFFF';
+const yellow    = '#F6AB00';
 
 export default {
   home: {
@@ -32,4 +33,50 @@ export default {
     flex: 1,
     backgroundColor: turquoise
   },
+
+  hpContainer: {
+    flexDirection: 'row'
+  },
+
+  hp: {
+    marginTop: 2,
+    fontSize: 20
+  },
+
+  heart: {
+    width: 30,
+    height: 30
+  },
+
+  letter: {
+    color: white,
+    fontSize: 25,
+  },
+
+  letterContainer: {
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    borderWidth: 1,
+    borderColor: black,
+  },
+
+  yellowLetter: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
+
+  yellowLetterBackground: {
+    height: '100%',
+    width: '100%',
+    backgroundColor: yellow,
+    position: 'absolute',
+  },
+
+  yellowLetterContainer: {
+    position: 'relative'
+  }
 }

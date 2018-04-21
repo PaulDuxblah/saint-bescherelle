@@ -15,7 +15,7 @@ export default class App extends React.Component {
   changeComponent = (component) => {
     this.setState({
       componentSelected: component    
-    })
+    });
   }
 
   startGame = () => {
@@ -61,6 +61,7 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={{flex: 1}}>
+        <StatusBar hidden={true} />
         {this.renderComponent(this.state.componentSelected)}
       </View>
     )
