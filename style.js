@@ -34,6 +34,20 @@ export default {
     backgroundColor: turquoise
   },
 
+  hpContainer: {
+    flexDirection: 'row'
+  },
+
+  hp: {
+    marginTop: 2,
+    fontSize: 20
+  },
+
+  heart: {
+    width: 30,
+    height: 30
+  },
+
   letter: {
     color: white,
     fontSize: 25,

@@ -3,29 +3,51 @@ import { Text, View, Image, TouchableOpacity, Animated, Background } from 'react
 
 import style from '../../style';
 
+import { loadCommonState } from './LetterCommon';
+
 class YellowLetter extends Component {
   constructor(props) {
     super(props);
+    this.state = loadCommonState(props);
     this.state = {
-      letter: this.props.letter,
-      posX: this.props.posX,
-      posY: this.props.posY,
+      ...this.state,
       animatedValue: new Animated.Value(50)
     }
   }
 
   handleClick = () => {
-    
+    this.disappear();
+    this.props.enterLetter(this.state.letter);
+  }
+
+  disappear = () => {
+    this.setState({
+      ...this.state,
+      display: false
+    });
+  }
+
+  tooLate = () => {
+    this.props.loseHP();
+    this.disappear();
   }
 
   componentDidMount() {
     Animated.timing(this.state.animatedValue, {
       toValue: 0,
       duration: 1000
-    }).start();
+    }).start((animation) => { 
+      if(animation.finished) {
+        this.tooLate();
+      } 
+    });
   }
 
   render() {
+    if (!this.state.display) {
+      return (null);
+    }
+
     return (
       <TouchableOpacity
         onPress={this.handleClick}
