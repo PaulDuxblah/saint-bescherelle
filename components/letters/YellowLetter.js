@@ -6,6 +6,8 @@ import style from '../../style';
 import { loadCommonState } from './LetterCommon';
 
 class YellowLetter extends Component {
+  value = 10;
+
   constructor(props) {
     super(props);
     this.state = loadCommonState(props);
@@ -18,6 +20,7 @@ class YellowLetter extends Component {
   handleClick = () => {
     this.disappear();
     this.props.enterLetter(this.state.letter);
+    this.props.changeScore(this.value);
   }
 
   disappear = () => {
@@ -39,7 +42,7 @@ class YellowLetter extends Component {
     }).start((animation) => { 
       if(animation.finished) {
         this.tooLate();
-      } 
+      }
     });
   }
 
