@@ -10,6 +10,7 @@ export default class App extends React.Component {
       scores: null,
       componentSelected: 'Home'
     };
+    this.loadScores();
   }
 
   changeComponent = (component) => {
@@ -24,38 +25,50 @@ export default class App extends React.Component {
 
   renderComponent = (component) => {
     if (component == 'Game') {
-      return <Game />
+      return <Game checkScore={this.checkScore} restartGame={this.restartGame} backToHome={this.backToHome} />
     } else {
       return <Home scores={this.state.scores} startGame={this.startGame} />
     }
+  }
+
+  backToHome = () => {
+    this.setState({componentSelected: 'Home'});
   }
 
   async loadScores () {
     try {
       AsyncStorage.getItem('scores')
       .then((value) => {
-        this.setState({ 'scores': JSON.parse(value) });
+        if (value === null) {
+          AsyncStorage
+            .setItem('scores', JSON.stringify([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]))
+            .then(() => { this.loadScores() });
+        } else {
+          this.setState({ ...this.state, 'scores': JSON.parse(value) });
+        }
       });
     } catch (error) {
       
     }
   }
 
-  async saveScore (score) {
+  checkScore = (score) => {
     let scores = this.state.scores;
     let worstScore = scores[scores.length - 1];
 
     if (score > worstScore) {
-      scores.splice(scores.length - 1);
-      scores.push(score);
-
-      scores.sort((a, b) => a - b);
-
-      AsyncStorage.setItem('scores', scores)
-      .then(() => {
-        this.loadUser();
-      });
+      this.saveScore(scores, score);
+      this.loadScores();
     }
+  }
+
+  async saveScore (scores, score) {
+    scores.splice(scores.length - 1);
+    scores.push(score);
+
+    scores.sort((a, b) => b - a);
+
+    AsyncStorage.setItem('scores', JSON.stringify(scores));
   }
 
   render() {
