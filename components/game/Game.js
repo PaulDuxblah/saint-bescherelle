@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import { Text, View, Image, TouchableOpacity, Animated, Dimensions } from 'react-native';
+import { Text, View, Image, TouchableOpacity, Animated, Dimensions, Footer } from 'react-native';
 
 import style from '../../style';
 
 import YellowLetter from '../letters/YellowLetter';
+import LetterToEnter from '../letters/LetterToEnter';
 
 const { height, width } = Dimensions.get('window');
 
 class Game extends Component {
+  wordsToWrite = [];
+
   constructor(props) {
     super(props);
     this.resetState();
@@ -16,11 +19,29 @@ class Game extends Component {
   resetState = () => {
     this.state = {
       score: 0,
-      wordToWrite: 'maison',
+      sentenceIndex: 0,
+      wordIndex: 0,
+      wordToWrite: this.wordsToWrite[0],
       lettersEntered: '',
-      hp: 1,
+      hp: 5,
       gameOver: false,
       gameOverAnimated: new Animated.Value(height)
+    };
+    this.loadNewSentence();
+  }
+
+  loadNewSentence = () => {
+    switch (this.state.sentenceIndex + 1) {
+      case 1: 
+        this.wordsToWrite = require('../../assets/words/1.json');
+        break;
+    }
+
+    this.state = {
+      ...this.state,
+      sentenceIndex: this.state.sentenceIndex + 1,
+      wordIndex: 0,
+      wordToWrite: this.wordsToWrite[0],
     };
   }
 
@@ -28,23 +49,41 @@ class Game extends Component {
     this.setState({score: this.state.score + scoreToAdd});
   }
 
-  generateWordToWrite = (word) => {
-    this.setState({wordToWrite: word});
-  }
-
   enterLetter = (letter) => {
     if (this.state.lettersEntered == '') {
       if (this.state.wordToWrite === letter) {
-        this.resetLettersEntered();
+        this.goToNextWord();
       } else {
-        this.setState({lettersEntered: letter});
+        this.goToNextLetter(letter);
       }
     } else {
       if (this.state.wordToWrite === this.state.lettersEntered + letter) {
-        this.resetLettersEntered();
+        this.goToNextWord();
       } else if (this.state.wordToWrite.indexOf(this.state.lettersEntered + letter) === 0) {
-        this.setState({lettersEntered: this.state.lettersEntered + letter});
+        this.goToNextLetter(this.state.lettersEntered + letter);
       }
+    }
+  }
+
+  goToNextLetter = (lettersEntered) => {
+    this.setState({
+      lettersEntered: lettersEntered,
+      wordIndex: this.state.wordIndex + 1
+    });
+  }
+
+  goToNextWord = () => {
+    this.resetLettersEntered();
+
+    let newIndex = this.state.wordIndex + 1;
+
+    if (this.wordsToWrite[newIndex] !== undefined) {
+      this.setState({
+        wordIndex: newIndex,
+        wordToWrite: this.wordsToWrite[newIndex],
+      });
+    } else {
+      this.loadNewSentence();
     }
   }
 
@@ -77,20 +116,28 @@ class Game extends Component {
     this.props.backToHome();
   }
 
-  render() {
-    let letter = null;
-    if (this.state.lettersEntered.length < 1) {
-      letter = <YellowLetter 
-        letter='m' 
-        posX={50} 
-        posY={400} 
-        enterLetter={this.enterLetter}
-        loseHP={this.loseHP}
-        changeScore={this.changeScore}
-      />
+  createLetter = (letterOfComponent, posX, posY, color = 'yellow') => {
+    let letterComponent = '';
+    switch(color) {
+      case 'yellow':
+        letterComponent = <YellowLetter 
+          letter={letterOfComponent} 
+          posX={posX} 
+          posY={posY} 
+          enterLetter={this.enterLetter}
+          loseHP={this.loseHP}
+          changeScore={this.changeScore}
+        />
+        break;
     }
 
+    return letterComponent;
+  }
+
+  render() {
     let gameOver = null;
+    let letter = null;
+    let wordToWrite = [];
     if (this.state.gameOver) {
       gameOver = <View style={[style.gameOverContainer]}>
         <Animated.View
@@ -113,6 +160,18 @@ class Game extends Component {
           </TouchableOpacity>
         </Animated.View>
       </View>;
+    } else {
+      if (this.state.wordToWrite.length > 0) {
+        letter = this.createLetter(this.state.wordToWrite[this.state.wordIndex], 100, 100);
+
+        for (let i = 0; i < this.state.wordToWrite.length; i++) {
+          wordToWrite.push(<LetterToEnter 
+            letter={this.state.wordToWrite.charAt(i)}
+            entered={i < this.state.wordIndex}
+            key={i}
+          />);
+        }
+      }
     }
 
     return (
@@ -131,6 +190,10 @@ class Game extends Component {
         </View>
 
         {letter}
+
+        <View style={[style.wordToWrite]}>
+          {wordToWrite}
+        </View>
       </View>
     )
   }

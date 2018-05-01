@@ -1,12 +1,14 @@
-const black     = '#000000';
-const blackR    = '0';
-const blackG    = '0';
-const blackB    = '0';
-const blue      = '#0000FF';
-const red       = '#FF0000';
-const turquoise = '#00E5EE';
-const white     = '#FFFFFF';
-const yellow    = '#F6AB00';
+const black                       = '#000000';
+const blackR                      = '0';
+const blackG                      = '0';
+const blackB                      = '0';
+const blue                        = '#0000FF';
+const red                         = '#FF0000';
+const gameBackground              = '#00E5EE';
+const white                       = '#FFFFFF';
+const yellow                      = '#F6AB00';
+const letterEnteredBackground     = '#F0E2A6';
+const letterNotEnteredBackground  = '#423f31';
 
 export default {
   home: {
@@ -34,7 +36,7 @@ export default {
 
   gameContainer: {
     flex: 1,
-    backgroundColor: turquoise
+    backgroundColor: gameBackground
   },
 
   hud: {
@@ -69,7 +71,37 @@ export default {
 
   letter: {
     color: white,
-    fontSize: 25,
+    fontSize: 25
+  },
+
+  letterToEnter: {
+    fontSize: 40,
+    alignSelf: 'center'
+  },
+
+  letterToEnterContainer: {
+    height: 50,
+    width: 50,
+    marginLeft: 5,
+    marginRight: 5,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+  letterEntered: {
+    color: white,
+  },
+
+  letterEnteredContainer: {
+    backgroundColor: letterEnteredBackground,
+  },
+
+  letterNotEntered: {
+    color: black,
+  },
+
+  letterNotEnteredContainer: {
+    backgroundColor: letterNotEnteredBackground
   },
 
   letterContainer: {
@@ -144,4 +176,14 @@ export default {
     padding: 10,
     color: white
   },
+
+  wordToWrite: {
+    position: 'absolute',
+    height: 50,
+    width: '100%',
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    bottom: 10
+  }
 }

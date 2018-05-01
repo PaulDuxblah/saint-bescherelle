@@ -10,11 +10,12 @@ class YellowLetter extends Component {
 
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = loadCommonState(props);
     this.state = {
       ...this.state,
       animatedValue: new Animated.Value(50)
-    }
+    };
   }
 
   handleClick = () => {
