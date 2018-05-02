@@ -6,10 +6,22 @@ import style from '../../style';
 class LetterToEnter extends Component {
   constructor(props) {
     super(props);
+    console.log('this.props');
+    console.log(this.props);
     this.state = {
       letter: props.letter,
       entered: props.entered
     };
+  }
+
+  shouldComponentUpdate(nextProps, prevState) {
+    // if (nextProps.entered && !prevState.entered) {
+    //   this.setState({
+    //     entered: nextProps.entered
+    //   });
+    // }
+
+    return true;
   }
 
   render() {

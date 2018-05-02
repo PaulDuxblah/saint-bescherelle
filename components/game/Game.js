@@ -10,10 +10,17 @@ const { height, width } = Dimensions.get('window');
 
 class Game extends Component {
   wordsToWrite = [];
+  letterIndex = 1;
 
   constructor(props) {
     super(props);
     this.resetState();
+  }
+
+  componentDidMount() {
+    if (!this.state.lettersEntered) {
+      this.setLettersEntered();
+    }
   }
 
   resetState = () => {
@@ -22,7 +29,7 @@ class Game extends Component {
       sentenceIndex: 0,
       wordIndex: 0,
       wordToWrite: this.wordsToWrite[0],
-      lettersEntered: '',
+      lettersEntered: [],
       hp: 5,
       gameOver: false,
       gameOverAnimated: new Animated.Value(height)
@@ -31,6 +38,7 @@ class Game extends Component {
   }
 
   loadNewSentence = () => {
+    console.log('loadNewSentence');
     switch (this.state.sentenceIndex + 1) {
       case 1: 
         this.wordsToWrite = require('../../assets/words/1.json');
@@ -42,6 +50,7 @@ class Game extends Component {
       sentenceIndex: this.state.sentenceIndex + 1,
       wordIndex: 0,
       wordToWrite: this.wordsToWrite[0],
+      lettersEntered: this.generateLettersEnteredFromWordToWrite()
     };
   }
 
@@ -50,22 +59,39 @@ class Game extends Component {
   }
 
   enterLetter = (letter) => {
-    if (this.state.lettersEntered == '') {
+    if (!this.state.lettersEntered[0].props.entered) {
+      // Word of single letter?
       if (this.state.wordToWrite === letter) {
         this.goToNextWord();
       } else {
-        this.goToNextLetter(letter);
+        this.goToNextLetter();
       }
     } else {
-      if (this.state.wordToWrite === this.state.lettersEntered + letter) {
+      const lettersEntered = this.writeLettersEntered();
+
+      // Word finalized?
+      if (this.state.wordToWrite === lettersEntered + letter) {
         this.goToNextWord();
-      } else if (this.state.wordToWrite.indexOf(this.state.lettersEntered + letter) === 0) {
-        this.goToNextLetter(this.state.lettersEntered + letter);
+      } else if (this.state.wordToWrite.indexOf(lettersEntered + letter) === 0) {
+        this.goToNextLetter();
       }
     }
   }
 
-  goToNextLetter = (lettersEntered) => {
+  writeLettersEntered = () => {
+    let word = '';
+    this.state.lettersEntered.forEach((letter) => {
+      word += letter;
+    });
+
+    return word;
+  }
+
+  goToNextLetter = () => {
+    console.log('goToNextLetter');
+    const lettersEntered = this.state.lettersEntered;
+    lettersEntered[this.state.wordIndex].props.entered = true;
+
     this.setState({
       lettersEntered: lettersEntered,
       wordIndex: this.state.wordIndex + 1
@@ -73,18 +99,42 @@ class Game extends Component {
   }
 
   goToNextWord = () => {
+    console.log('goToNextWord');
     this.resetLettersEntered();
 
-    let newIndex = this.state.wordIndex + 1;
+    const newIndex = this.state.wordIndex + 1;
 
     if (this.wordsToWrite[newIndex] !== undefined) {
       this.setState({
         wordIndex: newIndex,
         wordToWrite: this.wordsToWrite[newIndex],
       });
+      this.setLettersEntered();
     } else {
       this.loadNewSentence();
     }
+  }
+
+  setLettersEntered = () => {
+    this.setState({
+      lettersEntered: this.generateLettersEnteredFromWordToWrite()
+    });
+  }
+
+  generateLettersEnteredFromWordToWrite = () => {
+    console.log('generateLettersEnteredFromWordToWrite');
+    if (!this.state.wordToWrite) return;
+
+    let lettersEntered = new Array(this.state.wordToWrite.length);
+    for (let i = 0; i < this.state.wordToWrite.length; i++) {
+      lettersEntered[i] = <LetterToEnter 
+        letter={this.state.wordToWrite.charAt(i)}
+        entered={i < this.state.wordIndex}
+        key={'LetterToEnter-' + i}
+      />
+    }
+
+    return lettersEntered;
   }
 
   resetLettersEntered = () => {
@@ -127,9 +177,12 @@ class Game extends Component {
           enterLetter={this.enterLetter}
           loseHP={this.loseHP}
           changeScore={this.changeScore}
+          key={'YellowLetter-' + this.letterIndex}
         />
         break;
     }
+
+    this.letterIndex = this.letterIndex + 1;
 
     return letterComponent;
   }
@@ -163,16 +216,13 @@ class Game extends Component {
     } else {
       if (this.state.wordToWrite.length > 0) {
         letter = this.createLetter(this.state.wordToWrite[this.state.wordIndex], 100, 100);
-
-        for (let i = 0; i < this.state.wordToWrite.length; i++) {
-          wordToWrite.push(<LetterToEnter 
-            letter={this.state.wordToWrite.charAt(i)}
-            entered={i < this.state.wordIndex}
-            key={i}
-          />);
-        }
       }
     }
+
+    // if (this.state.lettersEntered) {
+    //   console.log('check state');
+    //   console.log(this.state.lettersEntered[0].props.entered);
+    // }
 
     return (
       <View style={[style.gameContainer]}>
@@ -192,7 +242,7 @@ class Game extends Component {
         {letter}
 
         <View style={[style.wordToWrite]}>
-          {wordToWrite}
+          {this.state.lettersEntered}
         </View>
       </View>
     )

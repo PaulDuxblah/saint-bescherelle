@@ -10,7 +10,6 @@ class YellowLetter extends Component {
 
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = loadCommonState(props);
     this.state = {
       ...this.state,
@@ -19,21 +18,21 @@ class YellowLetter extends Component {
   }
 
   handleClick = () => {
-    this.disappear();
+    // this.disappear();
     this.props.enterLetter(this.state.letter);
     this.props.changeScore(this.value);
   }
 
-  disappear = () => {
-    this.setState({
-      ...this.state,
-      display: false
-    });
-  }
+  // disappear = () => {
+  //   this.setState({
+  //     ...this.state,
+  //     display: false
+  //   });
+  // }
 
   tooLate = () => {
     this.props.loseHP();
-    this.disappear();
+    // this.disappear();
   }
 
   componentDidMount() {
@@ -48,10 +47,6 @@ class YellowLetter extends Component {
   }
 
   render() {
-    if (!this.state.display) {
-      return (null);
-    }
-
     return (
       <TouchableOpacity
         onPress={this.handleClick}
