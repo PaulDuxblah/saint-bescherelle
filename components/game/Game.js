@@ -30,6 +30,7 @@ class Game extends Component {
       wordIndex: 0,
       wordToWrite: this.wordsToWrite[0],
       lettersEntered: [],
+      letterIndex: 0,
       hp: 5,
       gameOver: false,
       gameOverAnimated: new Animated.Value(height)
@@ -38,7 +39,6 @@ class Game extends Component {
   }
 
   loadNewSentence = () => {
-    console.log('loadNewSentence');
     switch (this.state.sentenceIndex + 1) {
       case 1: 
         this.wordsToWrite = require('../../assets/words/1.json');
@@ -50,7 +50,8 @@ class Game extends Component {
       sentenceIndex: this.state.sentenceIndex + 1,
       wordIndex: 0,
       wordToWrite: this.wordsToWrite[0],
-      lettersEntered: this.generateLettersEnteredFromWordToWrite()
+      lettersEntered: this.generateLettersEnteredFromWordToWrite(),
+      letterIndex: 0
     };
   }
 
@@ -80,56 +81,81 @@ class Game extends Component {
 
   writeLettersEntered = () => {
     let word = '';
-    this.state.lettersEntered.forEach((letter) => {
-      word += letter;
+    this.state.lettersEntered.forEach((letterEntered) => {
+      if (letterEntered.props.entered) {
+        word += letterEntered.props.letter;
+      }
     });
 
     return word;
   }
 
   goToNextLetter = () => {
-    console.log('goToNextLetter');
-    const lettersEntered = this.state.lettersEntered;
-    lettersEntered[this.state.wordIndex].props.entered = true;
-
     this.setState({
-      lettersEntered: lettersEntered,
-      wordIndex: this.state.wordIndex + 1
+      letterIndex: this.state.letterIndex + 1
     });
+    this.setLettersEntered(this.state.letterIndex + 1);
   }
 
   goToNextWord = () => {
-    console.log('goToNextWord');
     this.resetLettersEntered();
 
-    const newIndex = this.state.wordIndex + 1;
+    const newWordIndex = this.state.wordIndex + 1;
 
-    if (this.wordsToWrite[newIndex] !== undefined) {
+    if (this.wordsToWrite[newWordIndex] !== undefined) {
       this.setState({
-        wordIndex: newIndex,
-        wordToWrite: this.wordsToWrite[newIndex],
+        wordIndex: newWordIndex,
+        letterIndex: 0,
+        wordToWrite: this.wordsToWrite[newWordIndex],
       });
-      this.setLettersEntered();
+      this.setLettersEnteredForWord(this.wordsToWrite[newWordIndex]);
     } else {
       this.loadNewSentence();
     }
   }
 
-  setLettersEntered = () => {
+  setLettersEnteredForWord = (word) => {
     this.setState({
-      lettersEntered: this.generateLettersEnteredFromWordToWrite()
+      lettersEntered: this.generateLettersEnteredForWord(word)
     });
   }
 
-  generateLettersEnteredFromWordToWrite = () => {
-    console.log('generateLettersEnteredFromWordToWrite');
+  generateLettersEnteredForWord = (word) => {
+    let lettersEntered = new Array(word.length);
+    for (let i = 0; i < word.length; i++) {
+      lettersEntered[i] = this.createLetterToEnter(word, false, i);
+    }
+
+    return lettersEntered;
+  }
+
+  createLetterToEnter = (word, entered, letterIndex) => {
+    return <LetterToEnter 
+      letter={word.charAt(letterIndex)}
+      entered={entered}
+      key={'LetterToEnter-' + letterIndex}
+    />
+  }
+
+  setLettersEntered = (newIndex = 0) => {
+    this.setState({
+      lettersEntered: this.generateLettersEnteredFromWordToWrite(newIndex)
+    });
+  }
+
+  generateLettersEnteredFromWordToWrite = (newLetterIndex = 0) => {
     if (!this.state.wordToWrite) return;
 
     let lettersEntered = new Array(this.state.wordToWrite.length);
     for (let i = 0; i < this.state.wordToWrite.length; i++) {
-      lettersEntered[i] = <LetterToEnter 
+      lettersEntered[i] = this.createLetterToEnter(
+        this.state.wordToWrite, 
+        i < this.state.letterIndex || i < newLetterIndex, 
+        i
+      );
+      <LetterToEnter 
         letter={this.state.wordToWrite.charAt(i)}
-        entered={i < this.state.wordIndex}
+        entered={i < this.state.letterIndex || i < newLetterIndex}
         key={'LetterToEnter-' + i}
       />
     }
@@ -138,7 +164,9 @@ class Game extends Component {
   }
 
   resetLettersEntered = () => {
-    this.setState({lettersEntered: ''});
+    this.setState({
+      lettersEntered: []
+    });
   }
 
   loseHP = () => {
@@ -215,14 +243,9 @@ class Game extends Component {
       </View>;
     } else {
       if (this.state.wordToWrite.length > 0) {
-        letter = this.createLetter(this.state.wordToWrite[this.state.wordIndex], 100, 100);
+        letter = this.createLetter(this.state.wordToWrite[this.state.letterIndex], 100, 100);
       }
     }
-
-    // if (this.state.lettersEntered) {
-    //   console.log('check state');
-    //   console.log(this.state.lettersEntered[0].props.entered);
-    // }
 
     return (
       <View style={[style.gameContainer]}>

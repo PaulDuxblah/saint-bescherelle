@@ -6,8 +6,6 @@ import style from '../../style';
 class LetterToEnter extends Component {
   constructor(props) {
     super(props);
-    console.log('this.props');
-    console.log(this.props);
     this.state = {
       letter: props.letter,
       entered: props.entered
@@ -15,13 +13,24 @@ class LetterToEnter extends Component {
   }
 
   shouldComponentUpdate(nextProps, prevState) {
-    // if (nextProps.entered && !prevState.entered) {
-    //   this.setState({
-    //     entered: nextProps.entered
-    //   });
-    // }
+    if (nextProps.letter != prevState.letter) {
+      this.setState({
+        letter: nextProps.letter,
+        entered: false
+      });
+    } else if (nextProps.entered && !prevState.entered) {
+      this.setState({
+        entered: true
+      });
+    }
 
     return true;
+  }
+
+  toggleEntered() {
+    this.setState({
+      entered: !this.state.entered
+    })
   }
 
   render() {
