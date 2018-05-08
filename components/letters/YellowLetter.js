@@ -14,25 +14,25 @@ class YellowLetter extends Component {
     this.state = {
       ...this.state,
       animatedValue: new Animated.Value(50)
-    }
+    };
   }
 
   handleClick = () => {
-    this.disappear();
+    // this.disappear();
     this.props.enterLetter(this.state.letter);
     this.props.changeScore(this.value);
   }
 
-  disappear = () => {
-    this.setState({
-      ...this.state,
-      display: false
-    });
-  }
+  // disappear = () => {
+  //   this.setState({
+  //     ...this.state,
+  //     display: false
+  //   });
+  // }
 
   tooLate = () => {
     this.props.loseHP();
-    this.disappear();
+    // this.disappear();
   }
 
   componentDidMount() {
@@ -47,10 +47,6 @@ class YellowLetter extends Component {
   }
 
   render() {
-    if (!this.state.display) {
-      return (null);
-    }
-
     return (
       <TouchableOpacity
         onPress={this.handleClick}
