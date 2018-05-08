@@ -1,5 +1,7 @@
 import React from 'react';
 import { StatusBar, View, StyleSheet, AsyncStorage } from 'react-native';
+import { Font, AppLoading } from 'expo';
+import Cambria from './assets/fonts/Cambria.ttf';
 import Home from './components/home/Home';
 import Game from './components/game/Game';
 
@@ -8,10 +10,20 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       scores: null,
-      componentSelected: 'Home'
+      componentSelected: 'Home',
+      loadingCompleted: false
     };
     this.loadScores();
+    this._loadResourcesAsync();
   }
+
+  _loadResourcesAsync = async () => {
+    return Promise.all([
+      Font.loadAsync({
+        'cambria': Cambria
+      })
+    ]);
+  };
 
   changeComponent = (component) => {
     this.setState({
@@ -71,13 +83,34 @@ export default class App extends React.Component {
     AsyncStorage.setItem('scores', JSON.stringify(scores));
   }
 
+  _handleLoadingError = (error) => {
+    console.warn(error);
+  };
+
+  _handleFinishLoading = () => {
+    this.setState({ loadingCompleted: true });
+  };
+
   render() {
-    return (
-      <View style={{flex: 1}}>
-        <StatusBar hidden={true} />
-        {this.renderComponent(this.state.componentSelected)}
-      </View>
-    )
+  }
+
+  render() {
+    if (!this.state.loadingCompleted && !this.props.skipLoadingScreen) {
+      return (
+        <AppLoading
+          startAsync={this._loadResourcesAsync}
+          onError={this._handleLoadingError}
+          onFinish={this._handleFinishLoading}
+        />
+      );
+    } else {
+      return (
+        <View style={{flex: 1}}>
+          <StatusBar hidden={true} />
+          {this.renderComponent(this.state.componentSelected)}
+        </View>
+      )
+    }
   }
 }
 
