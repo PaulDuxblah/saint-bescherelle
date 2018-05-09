@@ -209,6 +209,14 @@ class Game extends Component {
   }
 
   createLetter = (letterOfComponent, posX, posY, color = 'yellow') => {
+    if (posX == 'random') {
+      posX = Math.floor(Math.random() * (width - 50));
+    }
+
+    if (posY == 'random') {
+      posY = Math.floor(Math.random() * (height - 140));
+    }
+
     let letterComponent = '';
     switch(color) {
       case 'yellow':
@@ -262,7 +270,7 @@ class Game extends Component {
     let wordToWrite = [];
 
     if (this.state.wordToWrite.length > 0) {
-      letter = this.createLetter(this.state.wordToWrite[this.state.letterIndex], 100, 100);
+      letter = this.createLetter(this.state.wordToWrite[this.state.letterIndex], 'random', 'random');
     }
 
     return (
