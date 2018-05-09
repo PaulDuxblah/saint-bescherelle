@@ -13,17 +13,24 @@ class LetterToEnter extends Component {
   }
 
   shouldComponentUpdate(nextProps, prevState) {
-    if (nextProps.letter != prevState.letter) {
+    if (nextProps.forceUpdate && (nextProps.letter != prevState.letter || nextProps.entered != prevState.entered)) {
       this.setState({
         letter: nextProps.letter,
         entered: false
       });
-    } else if (nextProps.entered && !prevState.entered) {
-      this.setState({
-        entered: true
-      });
-    }
+    } else {
+      if (nextProps.letter != prevState.letter) {
+        this.setState({
+          letter: nextProps.letter,
+          entered: false
+        });
+      } else if (nextProps.entered && !prevState.entered) {
+        this.setState({
+          entered: true
+        });
+      }
 
+    }
     return true;
   }
 
@@ -34,7 +41,7 @@ class LetterToEnter extends Component {
   }
 
   render() {
-    let styleForLetter = [style.letterToEnter];
+    let styleForLetter = [style.letterToEnter, style.cambria];
     let styleForLetterContainer = [style.letterToEnterContainer];
     if (this.state.entered) {
       styleForLetter.push(style.letterEntered);

@@ -68,7 +68,7 @@ class YellowLetter extends Component {
             }
           ]} 
         />
-        <Text style={[style.letter]}>{ this.state.letter.toUpperCase() }</Text>
+        <Text style={[style.letter, style.cambria]}>{ this.state.letter.toUpperCase() }</Text>
       </TouchableOpacity>
     )
   }

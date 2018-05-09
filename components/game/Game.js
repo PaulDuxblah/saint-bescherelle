@@ -14,7 +14,7 @@ class Game extends Component {
 
   constructor(props) {
     super(props);
-    this.resetState();
+    this.resetState(true);
   }
 
   componentDidMount() {
@@ -23,7 +23,7 @@ class Game extends Component {
     }
   }
 
-  resetState = () => {
+  resetState = (constructing = false) => {
     this.state = {
       score: 0,
       sentenceIndex: 0,
@@ -35,24 +35,41 @@ class Game extends Component {
       gameOver: false,
       gameOverAnimated: new Animated.Value(height)
     };
-    this.loadNewSentence();
+    this.loadNewSentence(constructing);
   }
 
-  loadNewSentence = () => {
+  loadNewSentence = (constructing = false) => {
     switch (this.state.sentenceIndex + 1) {
       case 1: 
         this.wordsToWrite = require('../../assets/words/1.json');
         break;
+      case 2: 
+        this.wordsToWrite = require('../../assets/words/2.json');
+        break;
+      case 3: 
+        this.wordsToWrite = require('../../assets/words/3.json');
+        break;
     }
 
-    this.state = {
-      ...this.state,
-      sentenceIndex: this.state.sentenceIndex + 1,
-      wordIndex: 0,
-      wordToWrite: this.wordsToWrite[0],
-      lettersEntered: this.generateLettersEnteredFromWordToWrite(),
-      letterIndex: 0
-    };
+    if (constructing) {
+      this.state = {
+        ...this.state,
+        sentenceIndex: this.state.sentenceIndex + 1,
+        wordIndex: 0,
+        wordToWrite: this.wordsToWrite[0],
+        lettersEntered: this.generateLettersEnteredFromWordToWrite(),
+        letterIndex: 0
+      };
+    } else {
+      this.setState({
+        ...this.state,
+        sentenceIndex: this.state.sentenceIndex + 1,
+        wordIndex: 0,
+        wordToWrite: this.wordsToWrite[0],
+        letterIndex: 0
+      });
+      this.setLettersEnteredForWord(this.wordsToWrite[0]);
+    }
   }
 
   changeScore = (scoreToAdd) => {
@@ -123,17 +140,18 @@ class Game extends Component {
   generateLettersEnteredForWord = (word) => {
     let lettersEntered = new Array(word.length);
     for (let i = 0; i < word.length; i++) {
-      lettersEntered[i] = this.createLetterToEnter(word, false, i);
+      lettersEntered[i] = this.createLetterToEnter(word, false, i, true);
     }
 
     return lettersEntered;
   }
 
-  createLetterToEnter = (word, entered, letterIndex) => {
+  createLetterToEnter = (word, entered, letterIndex, forceUpdate = false) => {
     return <LetterToEnter 
       letter={word.charAt(letterIndex)}
       entered={entered}
       key={'LetterToEnter-' + letterIndex}
+      forceUpdate={forceUpdate}
     />
   }
 
@@ -143,7 +161,7 @@ class Game extends Component {
     });
   }
 
-  generateLettersEnteredFromWordToWrite = (newLetterIndex = 0) => {
+  generateLettersEnteredFromWordToWrite = (newLetterIndex = 0, forceUpdate = false) => {
     if (!this.state.wordToWrite) return;
 
     let lettersEntered = new Array(this.state.wordToWrite.length);
@@ -151,13 +169,9 @@ class Game extends Component {
       lettersEntered[i] = this.createLetterToEnter(
         this.state.wordToWrite, 
         i < this.state.letterIndex || i < newLetterIndex, 
-        i
+        i,
+        forceUpdate
       );
-      <LetterToEnter 
-        letter={this.state.wordToWrite.charAt(i)}
-        entered={i < this.state.letterIndex || i < newLetterIndex}
-        key={'LetterToEnter-' + i}
-      />
     }
 
     return lettersEntered;
@@ -216,49 +230,51 @@ class Game extends Component {
   }
 
   render() {
-    let gameOver = null;
+    if (this.state.gameOver) {
+      return (
+      <View style={[style.gameContainer]}>
+        <View style={[style.gameOverContainer]}>
+          <Animated.View
+            style={[
+              style.gameOverScreen,
+              {
+                top: this.state.gameOverAnimated
+              }
+            ]}
+          >
+            <Text style={[style.gameOverTitle, style.cambria]}>GAME OVER</Text>
+            <Text style={[style.gameOverScore, style.cambria]}>Score: {this.state.score}</Text>
+
+            <TouchableOpacity 
+              onPress={this.back}
+              style={[style.backButtonTouch]} 
+              activeOpacity={0.8} 
+            >
+              <Text style={[style.backButtonText, style.cambria]}>RETOUR AU MENU</Text>
+            </TouchableOpacity>
+          </Animated.View>
+        </View>
+      </View>
+      );
+    }
+
     let letter = null;
     let wordToWrite = [];
-    if (this.state.gameOver) {
-      gameOver = <View style={[style.gameOverContainer]}>
-        <Animated.View
-          style={[
-            style.gameOverScreen,
-            {
-              top: this.state.gameOverAnimated
-            }
-          ]}
-        >
-          <Text style={[style.gameOverTitle]}>GAME OVER</Text>
-          <Text style={[style.gameOverScore]}>Score: {this.state.score}</Text>
 
-          <TouchableOpacity 
-            onPress={this.back}
-            style={[style.backButtonTouch]} 
-            activeOpacity={0.8} 
-          >
-            <Text style={[style.backButtonText]}>RETOUR AU MENU</Text>
-          </TouchableOpacity>
-        </Animated.View>
-      </View>;
-    } else {
-      if (this.state.wordToWrite.length > 0) {
-        letter = this.createLetter(this.state.wordToWrite[this.state.letterIndex], 100, 100);
-      }
+    if (this.state.wordToWrite.length > 0) {
+      letter = this.createLetter(this.state.wordToWrite[this.state.letterIndex], 100, 100);
     }
 
     return (
       <View style={[style.gameContainer]}>
-        {gameOver}
-
         <View style={[style.hud]}>
           <View style={[style.hpContainer]}>
             <Image source={require("../../assets/images/heart.png")} style={[style.heart]} />
-            <Text style={[style.hp]}>{this.state.hp}</Text>
+            <Text style={[style.hp, style.cambria]}>{this.state.hp}</Text>
           </View>
 
           <View style={[style.scoreContainer]}>
-            <Text style={[style.gameScore]}>{this.state.score}</Text>
+            <Text style={[style.gameScore, style.cambria]}>{this.state.score}</Text>
           </View>
         </View>
 
