@@ -22,7 +22,7 @@ class Home extends Component {
       <Background>
         <View style={[style.container, style.home]}>
           <TouchableHighlight style={[style.homeButtonTouch]} onPress={this.startGame}>
-            <Text style={[style.homeButton]}>START</Text>
+            <Text style={[style.homeButton, style.cambria]}>START</Text>
           </TouchableHighlight>
         </View>
       </Background>

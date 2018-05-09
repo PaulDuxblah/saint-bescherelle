@@ -18,6 +18,10 @@ export default {
     alignItems: 'center',
   },
 
+  cambria: {
+    fontFamily: 'cambria'
+  },
+
   homeButton: {
     width: 200,
     padding: 10,
@@ -26,8 +30,7 @@ export default {
 
     borderWidth: 2,
     borderColor: red,
-    backgroundColor: white,
-    fontFamily: "cambria"
+    backgroundColor: white
   },
 
   homeButtonTouch: {
@@ -71,14 +74,12 @@ export default {
 
   letter: {
     color: white,
-    fontSize: 25,
-    fontFamily: "cambria"
+    fontSize: 25
   },
 
   letterToEnter: {
     fontSize: 40,
-    alignSelf: 'center',
-    fontFamily: "cambria"
+    alignSelf: 'center'
   },
 
   letterToEnterContainer: {
@@ -91,8 +92,7 @@ export default {
   },
 
   letterEntered: {
-    color: white,
-    fontFamily: "cambria"
+    color: white
   },
 
   letterEnteredContainer: {
@@ -100,8 +100,7 @@ export default {
   },
 
   letterNotEntered: {
-    color: black,
-    fontFamily: "cambria"
+    color: black
   },
 
   letterNotEnteredContainer: {
@@ -121,8 +120,7 @@ export default {
   yellowLetter: {
     position: 'absolute',
     top: 0,
-    left: 0,
-    fontFamily: "cambria"
+    left: 0
   },
 
   yellowLetterBackground: {
@@ -179,8 +177,7 @@ export default {
     fontSize: 20,
     alignSelf: 'center',
     padding: 10,
-    color: white,
-    fontFamily: "cambria"
+    color: white
   },
 
   wordToWrite: {
@@ -190,7 +187,6 @@ export default {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
-    bottom: 10,
-    fontFamily: "cambria"
+    bottom: 10
   }
 }
