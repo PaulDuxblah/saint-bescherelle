@@ -9,6 +9,7 @@ const white                       = '#FFFFFF';
 const yellow                      = '#F6AB00';
 const letterEnteredBackground     = '#F0E2A6';
 const letterNotEnteredBackground  = '#423f31';
+const scoreBackground             = '#850eb5';
 
 export default {
   home: {
@@ -29,17 +30,89 @@ export default {
     textAlign: 'center',
 
     borderWidth: 2,
+  },
+
+  homeStartGame: {
     borderColor: red,
     backgroundColor: white
   },
 
-  homeButtonTouch: {
+  homeScore: {
+    borderColor: yellow,
+    backgroundColor: white
+  },
 
+  homeButtonTouch: {
+    marginTop: 10,
+    marginBottom: 10
   },
 
   gameContainer: {
     flex: 1,
     backgroundColor: gameBackground
+  },
+
+  gameScoreContainer: {
+  },
+
+  scoreContainer: {
+    flex: 1,
+    backgroundColor: scoreBackground
+  },
+
+  scoresList: {
+    alignItems: 'center'
+  },
+
+  scoreRow: {
+    flexDirection: 'row',
+    width: '70%',
+    justifyContent: 'space-between'
+  },
+
+  scoreRank: {
+    marginTop: 10,
+    marginBottom: 10,
+    alignSelf: 'flex-start'
+  },
+
+  scoreRankText: {
+    fontSize: 24,
+    color: white
+  },
+
+  score: {
+    marginTop: 10,
+    marginBottom: 10,
+    alignSelf: 'flex-end'
+  },
+
+  scoreText: {
+    fontSize: 24,
+    color: white,
+  },
+
+  scoreBackToHome: {
+    marginTop: 20,
+    borderColor: red,
+    borderWidth: 2,
+    backgroundColor: white,
+    width: 200,
+    alignSelf: 'center'
+  },
+
+  scoreBackToHomeText: {
+    fontSize: 20,
+    alignSelf: 'center',
+    padding: 10,
+    color: black
+  },
+
+  scoreTitle: {
+    fontSize: 30,
+    alignSelf: 'center',
+    marginTop: 20,
+    color: white
   },
 
   hud: {

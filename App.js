@@ -4,6 +4,7 @@ import { Font, AppLoading } from 'expo';
 import Cambria from './assets/fonts/Cambria.ttf';
 import Home from './components/home/Home';
 import Game from './components/game/Game';
+import Score from './components/score/Score';
 
 export default class App extends React.Component {
   constructor (props) {
@@ -31,20 +32,26 @@ export default class App extends React.Component {
     });
   }
 
+  renderComponent = (component) => {
+    if (component == 'Game') {
+      return <Game checkScore={this.checkScore} restartGame={this.restartGame} backToHome={this.backToHome} />
+    } else if (component == 'Score') {
+      return <Score scores={this.state.scores} backToHome={this.backToHome} />
+    } else {
+      return <Home startGame={this.startGame} goToScore={this.goToScore} />
+    }
+  }
+
   startGame = () => {
     this.changeComponent('Game');
   }
 
-  renderComponent = (component) => {
-    if (component == 'Game') {
-      return <Game checkScore={this.checkScore} restartGame={this.restartGame} backToHome={this.backToHome} />
-    } else {
-      return <Home scores={this.state.scores} startGame={this.startGame} />
-    }
+  goToScore = () => {
+    this.changeComponent('Score');
   }
 
   backToHome = () => {
-    this.setState({componentSelected: 'Home'});
+    this.changeComponent('Home');
   }
 
   async loadScores () {
