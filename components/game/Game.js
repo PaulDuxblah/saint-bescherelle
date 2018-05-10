@@ -39,7 +39,9 @@ class Game extends Component {
   }
 
   loadNewSentence = (constructing = false) => {
-    switch (this.state.sentenceIndex + 1) {
+    let reset = false;
+    let newSentenceIndex = this.state.sentenceIndex + 1;
+    switch (newSentenceIndex) {
       case 1: 
         this.wordsToWrite = require('../../assets/words/1.json');
         break;
@@ -49,12 +51,16 @@ class Game extends Component {
       case 3: 
         this.wordsToWrite = require('../../assets/words/3.json');
         break;
+      default:
+        newSentenceIndex = 1;
+        this.wordsToWrite = require('../../assets/words/1.json');
+        break;
     }
 
     if (constructing) {
       this.state = {
         ...this.state,
-        sentenceIndex: this.state.sentenceIndex + 1,
+        sentenceIndex: newSentenceIndex,
         wordIndex: 0,
         wordToWrite: this.wordsToWrite[0],
         lettersEntered: this.generateLettersEnteredFromWordToWrite(),
@@ -63,7 +69,7 @@ class Game extends Component {
     } else {
       this.setState({
         ...this.state,
-        sentenceIndex: this.state.sentenceIndex + 1,
+        sentenceIndex: newSentenceIndex,
         wordIndex: 0,
         wordToWrite: this.wordsToWrite[0],
         letterIndex: 0
