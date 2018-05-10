@@ -117,21 +117,18 @@ export default {
     borderColor: black,
   },
 
-  yellowLetter: {
+  letterBackground: {
+    height: '100%',
+    width: '100%',
     position: 'absolute',
-    top: 0,
-    left: 0
   },
 
   yellowLetterBackground: {
-    height: '100%',
-    width: '100%',
     backgroundColor: yellow,
-    position: 'absolute',
   },
 
-  yellowLetterContainer: {
-    position: 'relative'
+  redLetterBackground: {
+    backgroundColor: red,
   },
 
   gameOverContainer: {
