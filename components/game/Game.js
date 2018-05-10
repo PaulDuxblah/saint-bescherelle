@@ -212,7 +212,7 @@ class Game extends Component {
     }).start();
   }
 
-  back = () => {
+  backToHome = () => {
     this.props.backToHome();
   }
 
@@ -273,7 +273,7 @@ class Game extends Component {
             <Text style={[style.gameOverScore, style.cambria]}>Score: {this.state.score}</Text>
 
             <TouchableOpacity 
-              onPress={this.back}
+              onPress={this.backToHome}
               style={[style.backButtonTouch]} 
               activeOpacity={0.8} 
             >
@@ -309,7 +309,7 @@ class Game extends Component {
             <Text style={[style.hp, style.cambria]}>{this.state.hp}</Text>
           </View>
 
-          <View style={[style.scoreContainer]}>
+          <View style={[style.gameScoreContainer]}>
             <Text style={[style.gameScore, style.cambria]}>{this.state.score}</Text>
           </View>
         </View>
