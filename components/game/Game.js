@@ -7,6 +7,8 @@ import YellowLetter from '../letters/YellowLetter';
 import RedLetter from '../letters/RedLetter';
 import LetterToEnter from '../letters/LetterToEnter';
 
+import GameOver from './GameOver';
+
 const { height, width } = Dimensions.get('window');
 
 class Game extends Component {
@@ -33,8 +35,7 @@ class Game extends Component {
       lettersEntered: [],
       letterIndex: 0,
       hp: 5,
-      gameOver: false,
-      gameOverAnimated: new Animated.Value(height)
+      gameOver: false
     };
     this.loadNewSentence(constructing);
   }
@@ -205,11 +206,6 @@ class Game extends Component {
     if (this.state.score > 0) {
       this.props.checkScore(this.state.score);
     }
-
-    Animated.timing(this.state.gameOverAnimated, {
-      toValue: 0,
-      duration: 1000
-    }).start();
   }
 
   backToHome = () => {
@@ -259,29 +255,11 @@ class Game extends Component {
   render() {
     if (this.state.gameOver) {
       return (
-      <View style={[style.gameContainer]}>
-        <View style={[style.gameOverContainer]}>
-          <Animated.View
-            style={[
-              style.gameOverScreen,
-              {
-                top: this.state.gameOverAnimated
-              }
-            ]}
-          >
-            <Text style={[style.gameOverTitle, style.cambria]}>GAME OVER</Text>
-            <Text style={[style.gameOverScore, style.cambria]}>Score: {this.state.score}</Text>
-
-            <TouchableOpacity 
-              onPress={this.backToHome}
-              style={[style.backButtonTouch]} 
-              activeOpacity={0.8} 
-            >
-              <Text style={[style.backButtonText, style.cambria]}>RETOUR AU MENU</Text>
-            </TouchableOpacity>
-          </Animated.View>
-        </View>
-      </View>
+        <GameOver
+          backToHome={this.backToHome}
+          gameOverAnimated={this.state.gameOverAnimated}
+          score={this.state.score}
+        />
       );
     }
 
