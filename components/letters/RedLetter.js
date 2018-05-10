@@ -5,8 +5,8 @@ import style from '../../style';
 
 import { loadCommonState } from './LetterCommon';
 
-class YellowLetter extends Component {
-  value = 10;
+class RedLetter extends Component {
+  value = 0;
 
   constructor(props) {
     super(props);
@@ -18,12 +18,11 @@ class YellowLetter extends Component {
   }
 
   handleClick = () => {
-    this.props.enterLetter(this.state.letter);
-    this.props.changeScore(this.value);
+    this.props.loseHP();
   }
 
   tooLate = () => {
-    this.props.loseHP();
+    this.props.changeScore(this.value);
   }
 
   componentDidMount() {
@@ -53,7 +52,7 @@ class YellowLetter extends Component {
         <Animated.View 
           style={[
             style.letterBackground,
-            style.yellowLetterBackground,
+            style.redLetterBackground, 
             { 
               height: this.state.animatedValue, 
               bottom: 0
@@ -66,4 +65,4 @@ class YellowLetter extends Component {
   }
 }
 
-export default YellowLetter;
+export default RedLetter;

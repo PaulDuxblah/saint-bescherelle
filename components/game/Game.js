@@ -4,6 +4,7 @@ import { Text, View, Image, TouchableOpacity, Animated, Dimensions, Footer } fro
 import style from '../../style';
 
 import YellowLetter from '../letters/YellowLetter';
+import RedLetter from '../letters/RedLetter';
 import LetterToEnter from '../letters/LetterToEnter';
 
 const { height, width } = Dimensions.get('window');
@@ -190,9 +191,10 @@ class Game extends Component {
   }
 
   loseHP = () => {
-    this.setState({hp: this.state.hp - 1});
+    let newHp = this.state.hp - 1;
+    this.setState({hp: newHp});
 
-    if (this.state.hp <= 0) {
+    if (newHp <= 0) {
       this.gameOver();
     }
   }
@@ -236,6 +238,17 @@ class Game extends Component {
           key={'YellowLetter-' + this.letterIndex}
         />
         break;
+      case 'red':
+        letterComponent = <RedLetter 
+          letter={letterOfComponent} 
+          posX={posX} 
+          posY={posY} 
+          enterLetter={this.enterLetter}
+          loseHP={this.loseHP}
+          changeScore={this.changeScore}
+          key={'RedLetter-' + this.letterIndex}
+        />
+        break;
     }
 
     this.letterIndex = this.letterIndex + 1;
@@ -276,7 +289,16 @@ class Game extends Component {
     let wordToWrite = [];
 
     if (this.state.wordToWrite.length > 0) {
-      letter = this.createLetter(this.state.wordToWrite[this.state.letterIndex], 'random', 'random');
+      let color = Math.floor(Math.random() * 100);
+      switch (true) {
+        case color < 40:
+          color = 'red';
+          break;
+        default:
+          color = 'yellow';
+      }
+
+      letter = this.createLetter(this.state.wordToWrite[this.state.letterIndex], 'random', 'random', color);
     }
 
     return (
