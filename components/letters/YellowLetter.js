@@ -44,8 +44,8 @@ class YellowLetter extends Component {
         style={[
           style.letterContainer,
           { 
-            marginLeft: this.state.posX,
-            marginTop: this.state.posY
+            left: this.state.posX,
+            top: this.state.posY
           }
         ]}
         activeOpacity={1}
