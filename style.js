@@ -10,6 +10,7 @@ const yellow                      = '#F6AB00';
 const letterEnteredBackground     = '#F0E2A6';
 const letterNotEnteredBackground  = '#423f31';
 const scoreBackground             = '#850eb5';
+const ghostBackground             = '#444444';
 
 export default {
   home: {
@@ -53,6 +54,11 @@ export default {
   },
 
   gameScoreContainer: {
+  },
+
+  gameArea: {
+    flex: 1,
+    position: 'relative',
   },
 
   scoreContainer: {
@@ -185,9 +191,18 @@ export default {
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'absolute',
 
     borderWidth: 1,
     borderColor: black,
+  },
+
+  ghostLetter: {
+    color: black
+  },
+
+  ghostLetterContainer: {
+    backgroundColor: ghostBackground
   },
 
   letterBackground: {
