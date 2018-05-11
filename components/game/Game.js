@@ -1,3 +1,4 @@
+import Expo from 'expo';
 import React, { Component } from 'react';
 import { Text, View, Image, TouchableOpacity, Animated, Dimensions, Footer } from 'react-native';
 
@@ -11,18 +12,48 @@ import GameOver from './GameOver';
 
 const { height, width } = Dimensions.get('window');
 
+const music = new Expo.Audio.Sound();
+
 class Game extends Component {
   wordsToWrite = [];
   letterIndex = 1;
 
   constructor(props) {
     super(props);
+    this.loadMusic().then(() => {
+      this.startMusic();
+    });
     this.resetState(true);
   }
 
   componentDidMount() {
     if (!this.state.lettersEntered) {
       this.setLettersEntered();
+    }
+  }
+
+  loadMusic = async () => {
+    try {
+      await music.loadAsync(require('../../assets/audio/maatoi.mp3'));
+      await music.setIsLoopingAsync(true);
+    } catch (error) {
+      
+    }
+  }
+
+  startMusic = async () => {
+    try {
+      await music.playAsync();
+    } catch (error) {
+      
+    }
+  }
+
+  stopMusic = async () => {
+    try {
+      await music.stopAsync();
+    } catch (error) {
+      
     }
   }
 
@@ -202,6 +233,7 @@ class Game extends Component {
 
   gameOver = () => {
     this.setState({gameOver: true});
+    this.stopMusic();
 
     if (this.state.score > 0) {
       this.props.checkScore(this.state.score);
