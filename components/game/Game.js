@@ -184,44 +184,63 @@ class Game extends Component {
     });
   }
 
-  generateLettersEnteredForWord = (word) => {
+  createLettersToEnter = (word, forceUpdate = false, newLetterIndex = 0) => {
+    let height = 50;
+    let width = 50;
+    let fontSize = 40;
+    let marginHorizontal = 5;
+
+    if (word.length > 6) {
+      height = 6 * height / word.length;
+      width = 6 * width / word.length;
+      fontSize = 6 * fontSize / word.length;
+      marginHorizontal = 6 * marginHorizontal / word.length;
+    }
+    
     let lettersEntered = new Array(word.length);
     for (let i = 0; i < word.length; i++) {
-      lettersEntered[i] = this.createLetterToEnter(word, false, i, true);
+      lettersEntered[i] = this.createLetterToEnter(
+        word.charAt(i), 
+        forceUpdate ? false : i < this.state.letterIndex || i < newLetterIndex,
+        i,
+        forceUpdate, 
+        height, 
+        width, 
+        fontSize, 
+        marginHorizontal
+      );
     }
 
     return lettersEntered;
   }
 
-  createLetterToEnter = (word, entered, letterIndex, forceUpdate = false) => {
+  createLetterToEnter = (letter, entered, letterIndex, forceUpdate = false, height = 50, width = 50, fontSize = 40, marginHorizontal = 5) => {
     return <LetterToEnter 
-      letter={word.charAt(letterIndex)}
+      letter={letter}
       entered={entered}
       key={'LetterToEnter-' + letterIndex}
       forceUpdate={forceUpdate}
+      height={height}
+      width={width}
+      fontSize={fontSize}
+      marginHorizontal={marginHorizontal}
     />
+  }
+
+  generateLettersEnteredForWord = (word) => {
+    return this.createLettersToEnter(word, true);
+  }
+
+  generateLettersEnteredFromWordToWrite = (newLetterIndex = 0, forceUpdate = false) => {
+    if (this.state.wordToWrite == null || this.state.wordToWrite == undefined) return;
+
+    return this.createLettersToEnter(this.state.wordToWrite, forceUpdate, newLetterIndex);
   }
 
   setLettersEntered = (newIndex = 0) => {
     this.setState({
       lettersEntered: this.generateLettersEnteredFromWordToWrite(newIndex)
     });
-  }
-
-  generateLettersEnteredFromWordToWrite = (newLetterIndex = 0, forceUpdate = false) => {
-    if (!this.state.wordToWrite) return;
-
-    let lettersEntered = new Array(this.state.wordToWrite.length);
-    for (let i = 0; i < this.state.wordToWrite.length; i++) {
-      lettersEntered[i] = this.createLetterToEnter(
-        this.state.wordToWrite, 
-        i < this.state.letterIndex || i < newLetterIndex, 
-        i,
-        forceUpdate
-      );
-    }
-
-    return lettersEntered;
   }
 
   resetLettersEntered = () => {
@@ -426,7 +445,7 @@ class Game extends Component {
     if (this.state.wordToWrite.length > 0) {
       let color = Math.floor(Math.random() * 100);
       switch (true) {
-        case color < 40:
+        case color < 30:
           color = 'red';
           break;
         default:

@@ -157,15 +157,10 @@ export default {
   },
 
   letterToEnter: {
-    fontSize: 40,
     alignSelf: 'center'
   },
 
   letterToEnterContainer: {
-    height: 50,
-    width: 50,
-    marginLeft: 5,
-    marginRight: 5,
     justifyContent: 'center',
     alignItems: 'center'
   },
