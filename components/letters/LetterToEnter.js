@@ -4,6 +4,8 @@ import { Text, View } from 'react-native';
 import style from '../../style';
 
 class LetterToEnter extends Component {
+  updated = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -13,24 +15,29 @@ class LetterToEnter extends Component {
   }
 
   shouldComponentUpdate(nextProps, prevState) {
-    if (nextProps.forceUpdate && (nextProps.letter != prevState.letter || nextProps.entered != prevState.entered)) {
-      this.setState({
-        letter: nextProps.letter,
-        entered: false
-      });
+    if (nextProps.forceUpdate) {
+      if (this.updated) {
+        this.updated = false;
+      } else {
+        this.updated = true;
+        this.setState({
+          letter: nextProps.letter,
+          entered: nextProps.entered
+        });
+      }
     } else {
       if (nextProps.letter != prevState.letter) {
         this.setState({
           letter: nextProps.letter,
           entered: false
         });
-      } else if (nextProps.entered && !prevState.entered) {
+      } else if (nextProps.entered === true && nextProps.entered && !prevState.entered) {
         this.setState({
           entered: true
         });
       }
-
     }
+
     return true;
   }
 
@@ -41,8 +48,22 @@ class LetterToEnter extends Component {
   }
 
   render() {
-    let styleForLetter = [style.letterToEnter, style.cambria];
-    let styleForLetterContainer = [style.letterToEnterContainer];
+    let styleForLetter = [
+      style.letterToEnter, 
+      style.cambria, 
+      {
+        fontSize: this.props.fontSize
+      }
+    ];
+    let styleForLetterContainer = [
+      style.letterToEnterContainer, 
+      {
+        height: this.props.height, 
+        width: this.props.width,
+        marginHorizontal: this.props.marginHorizontal
+      }
+    ];
+
     if (this.state.entered) {
       styleForLetter.push(style.letterEntered);
       styleForLetterContainer.push(style.letterEnteredContainer);
