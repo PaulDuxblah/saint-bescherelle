@@ -6,6 +6,7 @@ import style from '../../style';
 
 import YellowLetter from '../letters/YellowLetter';
 import RedLetter from '../letters/RedLetter';
+import BlueLetter from '../letters/BlueLetter';
 import GhostLetter from '../letters/GhostLetter';
 
 import LetterToEnter from '../letters/LetterToEnter';
@@ -307,7 +308,7 @@ class Game extends Component {
     return ghostLetter;
   }
 
-  createLetter = (letterOfComponent, posX = 'random', posY = 'random', color = 'yellow') => {
+  createLetter = (letterOfComponent, posX = 'random', posY = 'random', color = 'yellow', hps = undefined) => {
     posX = this.getPosX(posX);
     posY = this.getPosY(posY);
 
@@ -333,6 +334,18 @@ class Game extends Component {
           loseHP={this.loseHP}
           changeScore={this.changeScore}
           key={'RedLetter-' + this.letterIndex}
+        />
+        break;
+      case 'blue':
+        letterComponent = <BlueLetter 
+          letter={letterOfComponent} 
+          posX={posX} 
+          posY={posY} 
+          enterLetter={this.enterLetter}
+          loseHP={this.loseHP}
+          changeScore={this.changeScore}
+          key={'BlueLetter-' + this.letterIndex}
+          hps={hps}
         />
         break;
     }
@@ -409,7 +422,7 @@ class Game extends Component {
     return [nextPosX, nextPosY];
   }
 
-  createLetterAndNext = (letterOfComponent, posX = 'random', posY = 'random', color = 'yellow', nextPosX = 'random', nextPosY = 'random') => {
+  createLetterAndNext = (letterOfComponent, posX = 'random', posY = 'random', color = 'yellow', hps = undefined, nextPosX = 'random', nextPosY = 'random') => {
     if (nextLetterX) {
       posX = nextLetterX;
     }
@@ -425,7 +438,7 @@ class Game extends Component {
     [nextPosX, nextPosY] = this.getGhostLetterPositionDependingOfCurrentLetterPosition(posX, posY, nextPosX, nextPosY);
 
     return [
-      this.createLetter(letterOfComponent, posX, posY, color), 
+      this.createLetter(letterOfComponent, posX, posY, color, hps), 
       this.createGhostLetter(nextPosX, nextPosY)
     ];
   }
@@ -445,17 +458,27 @@ class Game extends Component {
     let nextLetter = null;
     let wordToWrite = [];
 
+    // For BlueLetter
+    let hps = undefined;
+
     if (this.state.wordToWrite.length > 0) {
       let color = Math.floor(Math.random() * 100);
       switch (true) {
         case color < 30:
           color = 'red';
           break;
+        case color < 55:
+          color = 'blue';
+          hps = Math.floor(Math.random() * 7);
+          if (hps < 2) {
+            hps = 2;
+          }
+          break;
         default:
           color = 'yellow';
       }
 
-      [letter, nextLetter] = this.createLetterAndNext(this.state.wordToWrite[this.state.letterIndex], 'random', 'random', color);
+      [letter, nextLetter] = this.createLetterAndNext(this.state.wordToWrite[this.state.letterIndex], 'random', 'random', color, hps);
     }
 
     return (
