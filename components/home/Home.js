@@ -47,6 +47,14 @@ class Home extends Component {
 
             <Text style={[style.homeRuleExplanation]}>-1 PV</Text>
           </View>
+
+          <View style={[style.homeRule]}>
+            <View style={[style.homeLetterContainer, style.blueLetterBackground]}>
+              <Text style={[style.letter, style.cambria]}>A</Text>
+            </View>
+
+            <Text style={[style.homeRuleExplanation]}>10 points / PV</Text>
+          </View>
         </View>
       </View>
     )

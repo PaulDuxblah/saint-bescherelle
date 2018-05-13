@@ -251,6 +251,20 @@ export default {
     backgroundColor: red,
   },
 
+  blueLetterBackground: {
+    backgroundColor: blue,
+  },
+
+  blueLetterHpsContainer: {
+    position: 'absolute',
+    right: 2,
+    top: 0
+  },
+
+  blueLetterHps: {
+    color: white
+  },
+
   gameOverContainer: {
     width: '100%',
     height: '100%',
