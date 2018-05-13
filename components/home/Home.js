@@ -53,7 +53,7 @@ class Home extends Component {
               <Text style={[style.letter, style.cambria]}>A</Text>
             </View>
 
-            <Text style={[style.homeRuleExplanation]}>10 points / PV</Text>
+            <Text style={[style.homeRuleExplanation]}>10 points / tap</Text>
           </View>
         </View>
       </View>
