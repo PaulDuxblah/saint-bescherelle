@@ -92,6 +92,9 @@ class Game extends Component {
       case 3: 
         this.wordsToWrite = require('../../assets/words/3.json');
         break;
+      case 4: 
+        this.wordsToWrite = require('../../assets/words/4.json');
+        break;
       default:
         newSentenceIndex = 1;
         this.wordsToWrite = require('../../assets/words/1.json');

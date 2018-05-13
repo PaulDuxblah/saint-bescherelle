@@ -4,6 +4,7 @@ const blackG                      = '0';
 const blackB                      = '0';
 const blue                        = '#0000FF';
 const red                         = '#FF0000';
+const lightRed                    = '#D02020';
 const gameBackground              = '#00E5EE';
 const white                       = '#FFFFFF';
 const yellow                      = '#F6AB00';
@@ -13,34 +14,70 @@ const scoreBackground             = '#850eb5';
 const ghostBackground             = '#444444';
 
 export default {
+  cambria: {
+    fontFamily: 'cambria'
+  },
+
   home: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    backgroundColor: lightRed
   },
 
-  cambria: {
-    fontFamily: 'cambria'
+  homeLetterContainer: {
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    borderWidth: 1,
+    borderColor: black,
   },
 
   homeButton: {
     width: 200,
     padding: 10,
-    fontSize: 30,
+    fontSize: 26,
     textAlign: 'center',
 
     borderWidth: 2,
   },
 
   homeStartGame: {
-    borderColor: red,
+    borderColor: gameBackground,
     backgroundColor: white
   },
 
   homeScore: {
-    borderColor: yellow,
+    borderColor: scoreBackground,
     backgroundColor: white
+  },
+
+  homeTitle: {
+    alignSelf: 'center',
+    textAlignVertical: 'top', 
+    color: white,
+    fontSize: 38,
+    marginTop: 20
+  },
+
+  homeRules: {
+    flexDirection: 'column',
+    marginBottom: 10
+  },
+
+  homeRule: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5
+  },
+
+  homeRuleExplanation: {
+    fontSize: 20,
+    color: white,
+    marginLeft: 10
   },
 
   homeButtonTouch: {
@@ -72,7 +109,7 @@ export default {
 
   scoreRow: {
     flexDirection: 'row',
-    width: '70%',
+    width: '30%',
     justifyContent: 'space-between'
   },
 
@@ -83,7 +120,7 @@ export default {
   },
 
   scoreRankText: {
-    fontSize: 24,
+    fontSize: 20,
     color: white
   },
 
@@ -94,7 +131,7 @@ export default {
   },
 
   scoreText: {
-    fontSize: 24,
+    fontSize: 20,
     color: white,
   },
 
@@ -248,7 +285,7 @@ export default {
     marginTop: 20,
     borderColor: red,
     borderWidth: 2,
-    backgroundColor: blue,
+    backgroundColor: lightRed,
     width: 200,
     alignSelf: 'center'
   },
