@@ -19,6 +19,7 @@ const gameAreaHeightMargin = 90;
 const letterWidth = 50;
 
 const music = new Expo.Audio.Sound();
+const loseHpSoundEffect = new Expo.Audio.Sound();
 
 let nextLetterX = null;
 let nextLetterY = null;
@@ -29,9 +30,13 @@ class Game extends Component {
 
   constructor(props) {
     super(props);
+
     this.loadMusic().then(() => {
       this.startMusic();
     });
+
+    this.loadSoundEffects();
+
     this.resetState(true);
   }
 
@@ -58,9 +63,45 @@ class Game extends Component {
     }
   }
 
+  resetMusic = async () => {
+    try {
+      await music.setPositionAsync(0);
+    } catch (error) {
+      
+    }
+  }
+
   stopMusic = async () => {
     try {
-      await music.stopAsync();
+      await music.stopAsync().then(() => {
+        this.resetMusic();
+      });
+    } catch (error) {
+      
+    }
+  }
+
+  loadSoundEffects = async () => {
+    try {
+      await loseHpSoundEffect.loadAsync(require('../../assets/audio/loseHpSound.mp3'));
+    } catch (error) {
+      
+    }
+  }
+
+  playLoseHpSoundEffect = async () => {
+    try {
+      loseHpSoundEffect.playAsync().then(() => {
+        this.resetLoseHpSoundEffect();
+      });
+    } catch (error) {
+      
+    }
+  }
+
+  resetLoseHpSoundEffect = async () => {
+    try {
+      await loseHpSoundEffect.setPositionAsync(0);
     } catch (error) {
       
     }
@@ -259,6 +300,8 @@ class Game extends Component {
 
     if (newHp <= 0) {
       this.gameOver();
+    } else {
+      this.playLoseHpSoundEffect();
     }
   }
 
