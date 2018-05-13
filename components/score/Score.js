@@ -25,10 +25,11 @@ class Score extends Component {
         scores[i] = (
           <View style={[style.scoreRow]} key={i}>
             <View style={[style.scoreRank]}>
-              <Text style={[style.cambria, style.scoreRankText]}>{i+1}.</Text>
+              <Text style={[style.scoreRankText]}>{i+1}.</Text>
             </View>
+            
             <View style={[style.score]}>
-              <Text style={[style.cambria, style.scoreText]}>{this.state.scores[i] ? this.state.scores[i].toString() : 0}</Text>
+              <Text style={[style.scoreText]}>{this.state.scores[i] ? this.state.scores[i].toString() : 0}</Text>
             </View>
           </View>
         );
@@ -37,14 +38,14 @@ class Score extends Component {
 
     return (
       <View style={[style.container, style.scoreContainer]}>
-        <Text style={[style.cambria, style.scoreTitle]}>VOS MEILLEURS SCORES</Text>
+        <Text style={[style.scoreTitle]}>VOS MEILLEURS SCORES</Text>
 
         <View style={[style.scoresList]}>
           {scores}
         </View>
 
         <TouchableHighlight style={[style.scoreBackToHome]} onPress={this.backToHome}>
-          <Text style={[style.cambria, style.scoreBackToHomeText]}>BACK</Text>
+          <Text style={[style.scoreBackToHomeText]}>BACK</Text>
         </TouchableHighlight>
       </View>
     )
