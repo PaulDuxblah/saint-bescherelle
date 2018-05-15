@@ -31,13 +31,32 @@ class Home extends Component {
           </TouchableHighlight>
         </View>
 
+        <View style={[style.homePreRules]}></View>
+
+        <View style={[style.homeMainRule]}>
+          <Text style={[style.homeMainRuleExplanation]}>
+            Tapez les lettres qui apparaissent !
+          </Text>
+          <Text style={[style.homeMainRuleExplanation]}>
+            Amassez un max de points !
+          </Text>
+        </View>
+
         <View style={[style.homeRules]}>
           <View style={[style.homeRule]}>
             <View style={[style.homeLetterContainer, style.yellowLetterBackground]}>
               <Text style={[style.letter, style.cambria]}>A</Text>
             </View>
 
-            <Text style={[style.homeRuleExplanation]}>10 points</Text>
+            <Text style={[style.homeRuleExplanation]}>+10 points</Text>
+          </View>
+
+          <View style={[style.homeRule]}>
+            <View style={[style.homeLetterContainer, style.blueLetterBackground]}>
+              <Text style={[style.letter, style.cambria]}>A</Text>
+            </View>
+
+            <Text style={[style.homeRuleExplanation]}>+10 points / tap</Text>
           </View>
 
           <View style={[style.homeRule]}>
@@ -46,14 +65,6 @@ class Home extends Component {
             </View>
 
             <Text style={[style.homeRuleExplanation]}>-1 PV</Text>
-          </View>
-
-          <View style={[style.homeRule]}>
-            <View style={[style.homeLetterContainer, style.blueLetterBackground]}>
-              <Text style={[style.letter, style.cambria]}>A</Text>
-            </View>
-
-            <Text style={[style.homeRuleExplanation]}>10 points / tap</Text>
           </View>
         </View>
       </View>

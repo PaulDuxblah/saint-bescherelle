@@ -63,9 +63,24 @@ export default {
     marginTop: 20
   },
 
+  homePreRules: {
+    height: 10,
+    marginTop: 10
+  },
+
+  homeMainRule: {
+    textAlign: 'center',
+  },
+
   homeRules: {
     flexDirection: 'column',
     marginBottom: 10
+  },
+
+  homeMainRuleExplanation: {
+    textAlign: 'center',
+    fontSize: 20,
+    color: white
   },
 
   homeRule: {
@@ -275,8 +290,10 @@ export default {
   },
 
   gameOverScreen: {
-    height: 360,
+    height: 240,
     width: 300,
+    justifyContent: 'space-between',
+    paddingVertical: 20,
     borderColor: red,
     borderWidth: 4,
     backgroundColor: white,
@@ -286,13 +303,11 @@ export default {
   gameOverTitle: {
     fontSize: 30,
     textAlign: 'center',
-    marginTop: 10
   },
 
   gameOverScore: {
-    fontSize: 20,
+    fontSize: 24,
     alignSelf: 'center',
-    marginTop: 20
   },
 
   backButtonTouch: {
