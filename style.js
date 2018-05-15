@@ -68,10 +68,6 @@ export default {
     marginTop: 10
   },
 
-  homeMainRule: {
-    textAlign: 'center',
-  },
-
   homeRules: {
     flexDirection: 'column',
     marginBottom: 10
