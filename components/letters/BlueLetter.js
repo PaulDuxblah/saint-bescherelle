@@ -23,7 +23,7 @@ class BlueLetter extends Component {
         hps: this.props.hps
       };
       this.value = 10 * this.props.hps;
-      this.duration = 950 + (50 * this.props.hps);
+      this.duration = 900 + (100 * this.props.hps);
     }
   }
 
