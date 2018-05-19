@@ -57,6 +57,7 @@ class Game extends Component {
     try {
       await music.loadAsync(require('../../assets/audio/maatoi.mp3'));
       await music.setIsLoopingAsync(true);
+      await music.setVolumeAsync(this.props.musicVolume / 100);
     } catch (error) {
       
     }
@@ -91,6 +92,7 @@ class Game extends Component {
   loadSoundEffects = async () => {
     try {
       await loseHpSoundEffect.loadAsync(require('../../assets/audio/loseHpSound.mp3'));
+      await loseHpSoundEffect.setVolumeAsync(this.props.soundEffectsVolume / 100);
     } catch (error) {
       
     }

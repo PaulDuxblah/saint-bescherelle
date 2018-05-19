@@ -5,6 +5,7 @@ import Cambria from './assets/fonts/Cambria.ttf';
 import Home from './components/home/Home';
 import Game from './components/game/Game';
 import Score from './components/score/Score';
+import Options from './components/options/Options';
 
 export default class App extends React.Component {
   constructor (props) {
@@ -12,9 +13,10 @@ export default class App extends React.Component {
     this.state = {
       scores: null,
       componentSelected: 'Home',
-      loadingCompleted: false
+      loadingCompleted: false,
     };
     this.loadScores();
+    this.loadOptions();
     this._loadResourcesAsync();
   }
 
@@ -32,13 +34,48 @@ export default class App extends React.Component {
     });
   }
 
+  changeMusicVolume = (volume) => {
+    if (volume >= 0 && volume <= 100) {
+      this.setState({musicVolume: volume});
+      this.changeOptions('musicVolume', volume);
+    }
+  }
+
+  changeSoundEffectsVolume = (volume) => {
+    if (volume >= 0 && volume <= 100) {
+      this.setState({soundEffectsVolume: volume});
+      this.changeOptions('soundEffectsVolume', volume);
+    }
+  }
+
   renderComponent = (component) => {
     if (component == 'Game') {
-      return <Game checkScore={this.checkScore} restartGame={this.restartGame} backToHome={this.backToHome} />
+      return <Game 
+        checkScore={this.checkScore} 
+        restartGame={this.restartGame} 
+        backToHome={this.backToHome} 
+        musicVolume={this.state.musicVolume} 
+        soundEffectsVolume={this.state.soundEffectsVolume} 
+      />
     } else if (component == 'Score') {
-      return <Score scores={this.state.scores} backToHome={this.backToHome} />
+      return <Score 
+        scores={this.state.scores} 
+        backToHome={this.backToHome}
+      />
+    } else if (component == 'Options') {
+      return <Options 
+        backToHome={this.backToHome} 
+        musicVolume={this.state.musicVolume} 
+        soundEffectsVolume={this.state.soundEffectsVolume} 
+        changeMusicVolume={this.changeMusicVolume} 
+        changeSoundEffectsVolume={this.changeSoundEffectsVolume} 
+      />
     } else {
-      return <Home startGame={this.startGame} goToScore={this.goToScore} />
+      return <Home 
+        startGame={this.startGame} 
+        goToScore={this.goToScore} 
+        goToOptions={this.goToOptions} 
+      />
     }
   }
 
@@ -48,6 +85,10 @@ export default class App extends React.Component {
 
   goToScore = () => {
     this.changeComponent('Score');
+  }
+
+  goToOptions = () => {
+    this.changeComponent('Options');
   }
 
   backToHome = () => {
@@ -90,6 +131,41 @@ export default class App extends React.Component {
     AsyncStorage.setItem('scores', JSON.stringify(scores));
   }
 
+  async loadOptions () {
+    try {
+      AsyncStorage.getItem('options')
+      .then((value) => {
+        if (value === null) {
+          AsyncStorage
+            .setItem('options', JSON.stringify({
+              musicVolume: 100,
+              soundEffectsVolume: 100,
+            }))
+            .then(() => { this.loadOptions() });
+        } else {
+          const options = JSON.parse(value);
+          this.setState({ 
+            ...this.state, 
+            musicVolume: options.musicVolume,
+            soundEffectsVolume: options.soundEffectsVolume
+          });
+        }
+      });
+    } catch (error) {
+      
+    }
+  }
+
+  async changeOptions (parameterToChange, newValue) {
+    let newOptions = {
+      musicVolume: this.state.musicVolume,
+      soundEffectsVolume: this.state.soundEffectsVolume
+    }
+    newOptions[parameterToChange] = newValue;
+
+    AsyncStorage.setItem('options', JSON.stringify(newOptions));
+  }
+
   _handleLoadingError = (error) => {
     console.warn(error);
   };
@@ -97,9 +173,6 @@ export default class App extends React.Component {
   _handleFinishLoading = () => {
     this.setState({ loadingCompleted: true });
   };
-
-  render() {
-  }
 
   render() {
     if (!this.state.loadingCompleted && !this.props.skipLoadingScreen) {

@@ -12,6 +12,10 @@ class Home extends Component {
     this.props.startGame();
   }
 
+  goToOptions = () => {
+    this.props.goToOptions();
+  }
+
   goToScore = () => {
     this.props.goToScore();
   }
@@ -24,6 +28,10 @@ class Home extends Component {
         <View style={[style.homeButtons]}>
           <TouchableHighlight style={[style.homeButtonTouch]} onPress={this.startGame}>
             <Text style={[style.homeButton, style.homeStartGame]}>COMMENCER</Text>
+          </TouchableHighlight>
+
+          <TouchableHighlight style={[style.homeButtonTouch]} onPress={this.goToOptions}>
+            <Text style={[style.homeButton, style.homeOptions]}>OPTIONS</Text>
           </TouchableHighlight>
 
           <TouchableHighlight style={[style.homeButtonTouch]} onPress={this.goToScore}>
