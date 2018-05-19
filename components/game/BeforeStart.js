@@ -1,20 +1,18 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Animated, Dimensions } from 'react-native';
+import { Text, View, Animated, Easing } from 'react-native';
 
 import style from '../../style';
-
-const { height, width } = Dimensions.get('window');
 
 class BeforeStart extends Component {
   constructor(props) {
     super(props);
-    this.resetState();
+    this.resetState(true);
     this.animateText();
     this.animateContainer();
   }
 
-  resetState = () => {
-    this.resetLetterSizeAnimated();
+  resetState = (constructing = false) => {
+    this.resetLetterSizeAnimated(constructing);
     this.state = {
       ...this.state,
       toWrite: '3',
@@ -22,17 +20,24 @@ class BeforeStart extends Component {
     }
   }
 
-  resetLetterSizeAnimated = () => {
-    this.state = {
-      ...this.state,
-      letterSizeAnimated: new Animated.Value(0)
+  resetLetterSizeAnimated = (constructing = false) => {
+    if (constructing) {
+      this.state = {
+        ...this.state,
+        letterSizeAnimated: new Animated.Value(0)
+      }
+    } else {
+      this.setState({
+        letterSizeAnimated: new Animated.Value(0)
+      })
     }
   }
 
   animateText = () => {
     Animated.timing(this.state.letterSizeAnimated, {
-      toValue: 100,
-      duration: 1000
+      toValue: 120,
+      duration: 300,
+      easing: Easing.linear
     }).start((animation) => { 
       if (animation.finished) {
         let futureToWrite = '';
@@ -44,18 +49,29 @@ class BeforeStart extends Component {
             futureToWrite = '1';
             break;
           case '1':
-            futureToWrite = 'GO !';
+            futureToWrite = 'GO';
             break;
-          case 'GO !':
-            return this.gameStarted();
+          case 'GO':
             break
         }
-        this.setState({
-          toWrite: futureToWrite
-        });
 
-        this.resetLetterSizeAnimated();
-        this.animateText();
+        Animated.timing(this.state.letterSizeAnimated, {
+          toValue: 160,
+          duration: 700,
+          easing: Easing.linear
+        }).start((a) => {
+          if (a.finished) {
+            if (this.state.toWrite === 'GO') {
+              return this.gameStarted();
+            }
+
+            this.setState({
+              toWrite: futureToWrite
+            });
+            this.resetLetterSizeAnimated();
+            this.animateText();
+          }
+        });
       }
     });
   }

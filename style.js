@@ -339,6 +339,6 @@ export default {
   },
 
   beforeStartText: {
-    color: yellow
+    color: yellow,
   }
 }

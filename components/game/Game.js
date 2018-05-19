@@ -47,7 +47,7 @@ class Game extends Component {
 
   componentDidUpdate() {
     music.getStatusAsync().then((musicStatus) => {
-      if (!this.state.starting && !musicStatus.isPlaying) {
+      if (!this.state.starting && !this.state.gameOver && !musicStatus.isPlaying) {
         this.startMusic();
       }
     });
