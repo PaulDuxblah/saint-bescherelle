@@ -126,7 +126,6 @@ class Game extends Component {
       gameOver: false,
       starting: true
     };
-    this.starting = 4;
     this.loadNewSentence(constructing);
   }
 
