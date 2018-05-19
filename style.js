@@ -330,5 +330,15 @@ export default {
     flexDirection: 'row',
     justifyContent: 'center',
     bottom: 10
+  },
+
+  beforeStartContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+
+  beforeStartText: {
+    color: yellow,
   }
 }
