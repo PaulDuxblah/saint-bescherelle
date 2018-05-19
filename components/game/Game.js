@@ -12,6 +12,7 @@ import GhostLetter from '../letters/GhostLetter';
 import LetterToEnter from '../letters/LetterToEnter';
 
 import GameOver from './GameOver';
+import BeforeStart from './BeforeStart';
 
 const { height, width } = Dimensions.get('window');
 const letterHeight = 50;
@@ -31,9 +32,7 @@ class Game extends Component {
   constructor(props) {
     super(props);
 
-    this.loadMusic().then(() => {
-      this.startMusic();
-    });
+    this.loadMusic();
 
     this.loadSoundEffects();
 
@@ -44,6 +43,14 @@ class Game extends Component {
     if (!this.state.lettersEntered) {
       this.setLettersEntered();
     }
+  }
+
+  componentDidUpdate() {
+    music.getStatusAsync().then((musicStatus) => {
+      if (!this.state.starting && !musicStatus.isPlaying) {
+        this.startMusic();
+      }
+    });
   }
 
   loadMusic = async () => {
@@ -95,7 +102,7 @@ class Game extends Component {
         this.resetLoseHpSoundEffect();
       });
     } catch (error) {
-      
+
     }
   }
 
@@ -116,8 +123,10 @@ class Game extends Component {
       lettersEntered: [],
       letterIndex: 0,
       hp: 5,
-      gameOver: false
+      gameOver: false,
+      starting: true
     };
+    this.starting = 4;
     this.loadNewSentence(constructing);
   }
 
@@ -489,7 +498,21 @@ class Game extends Component {
     ];
   }
 
+  gameStarted = () => {
+    this.setState({
+      starting: false
+    })
+  }
+
   render() {
+    if (this.state.starting) {
+      return (
+        <BeforeStart
+          gameStarted={this.gameStarted}
+        />
+      );
+    }
+
     if (this.state.gameOver) {
       return (
         <GameOver

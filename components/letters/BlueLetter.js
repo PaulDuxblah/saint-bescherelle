@@ -49,7 +49,7 @@ class BlueLetter extends Component {
       toValue: 0,
       duration: this.duration
     }).start((animation) => { 
-      if(animation.finished) {
+      if (animation.finished) {
         this.tooLate();
       }
     });
