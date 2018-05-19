@@ -12,6 +12,7 @@ const letterEnteredBackground     = '#F0E2A6';
 const letterNotEnteredBackground  = '#423f31';
 const scoreBackground             = '#850eb5';
 const ghostBackground             = '#444444';
+const optionsBackground           = '#F6AB00';
 
 export default {
   cambria: {
@@ -47,6 +48,11 @@ export default {
 
   homeStartGame: {
     borderColor: gameBackground,
+    backgroundColor: white
+  },
+
+  homeOptions: {
+    borderColor: optionsBackground,
     backgroundColor: white
   },
 
@@ -339,6 +345,93 @@ export default {
   },
 
   beforeStartText: {
-    color: yellow,
-  }
+    color: white,
+  },
+
+  options: {
+    backgroundColor: optionsBackground,
+    flex: 1,
+    justifyContent: 'space-between'
+  },
+
+  optionsTitle: {
+    fontSize: 30,
+    alignSelf: 'center',
+    marginTop: 20,
+    color: white
+  },
+
+  optionsParameters: {
+    justifyContent: 'center'
+  },
+
+  optionsGroup: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '70%',
+    alignSelf: 'center',
+    marginVertical: 10
+  },
+
+  optionsParameter: {
+    color: white,
+    fontSize: 20
+  },
+
+  optionsParametersTitle: {
+    color: white,
+    fontSize: 30,
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+
+  optionsGroupEditable: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '50%',
+    alignItems: 'baseline' 
+  },
+
+  optionsValue: {
+    color: white,
+    fontSize: 20,
+    marginHorizontal: 10,
+    width: 50,
+    textAlign: 'center' 
+  },
+
+  optionsTouchable: {
+    backgroundColor: white,
+    borderRadius: 40,
+    borderColor: black,
+    borderWidth: 1,
+    padding: 5,
+    height: 30,
+    width: 30,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+
+  optionsTouchableText: {
+    color: black,
+    fontSize: 22,
+    alignSelf: 'center'
+  },
+
+  optionsBackToHome: {
+    marginTop: 20,
+    borderColor: red,
+    borderWidth: 2,
+    backgroundColor: white,
+    width: 200,
+    alignSelf: 'center',
+    marginBottom: 30
+  },
+
+  optionsBackToHomeText: {
+    fontSize: 20,
+    alignSelf: 'center',
+    padding: 10,
+    color: black
+  },
 }

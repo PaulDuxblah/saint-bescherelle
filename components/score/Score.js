@@ -45,7 +45,7 @@ class Score extends Component {
         </View>
 
         <TouchableHighlight style={[style.scoreBackToHome]} onPress={this.backToHome}>
-          <Text style={[style.scoreBackToHomeText]}>BACK</Text>
+          <Text style={[style.scoreBackToHomeText]}>RETOUR AU MENU</Text>
         </TouchableHighlight>
       </View>
     )
