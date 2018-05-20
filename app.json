@@ -1,5 +1,13 @@
 {
   "expo": {
-    "sdkVersion": "26.0.0"
+    "name": "Saint-Bescherelle",
+    "description": "A game where you write words by tapping letters popping on the screen",
+    "sdkVersion": "26.0.0",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.paulgirardin.saintbescherelle"
+    }
   }
 }
