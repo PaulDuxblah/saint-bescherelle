@@ -13,6 +13,7 @@ const letterNotEnteredBackground  = '#423f31';
 const scoreBackground             = '#850eb5';
 const ghostBackground             = '#444444';
 const optionsBackground           = '#F6AB00';
+const popupBackground             = 'rgba(' + blackR + ', ' + blackG + ', ' + blackB + ', 0.5)';
 
 export default {
   cambria: {
@@ -285,7 +286,7 @@ export default {
   gameOverContainer: {
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(' + blackR + ', ' + blackG + ', ' + blackB + ', 0.5)',
+    backgroundColor: popupBackground,
     top: 0,
     left: 0,
     justifyContent: 'center',
@@ -434,4 +435,38 @@ export default {
     padding: 10,
     color: black
   },
+
+  gameMenuContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    height: '100%',
+    width: '100%',
+    backgroundColor: popupBackground,
+    justifyContent: 'center'
+  },
+
+  gameMenuScreen: {
+    height: 240,
+    width: 300,
+    justifyContent: 'space-between',
+    paddingVertical: 20,
+    borderColor: red,
+    borderWidth: 4,
+    backgroundColor: white,
+    alignSelf: 'center',
+  },
+
+  gameMenuTitle: {
+    fontSize: 30,
+    textAlign: 'center'
+  },
+
+  gameMenuContinue: {
+    backgroundColor: white
+  },
+
+  gameMenuContinueText: {
+    color: black
+  }
 }

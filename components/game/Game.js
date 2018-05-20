@@ -1,6 +1,6 @@
 import Expo from 'expo';
 import React, { Component } from 'react';
-import { Text, View, Image, TouchableOpacity, Animated, Dimensions, Footer } from 'react-native';
+import { Text, View, Image, TouchableOpacity, Animated, Dimensions, Footer, BackHandler } from 'react-native';
 
 import style from '../../style';
 
@@ -12,6 +12,7 @@ import GhostLetter from '../letters/GhostLetter';
 import LetterToEnter from '../letters/LetterToEnter';
 
 import GameOver from './GameOver';
+import GameMenu from './GameMenu';
 import BeforeStart from './BeforeStart';
 
 const { height, width } = Dimensions.get('window');
@@ -22,8 +23,12 @@ const letterWidth = 50;
 const music = new Expo.Audio.Sound();
 const loseHpSoundEffect = new Expo.Audio.Sound();
 
+let currentLetterX = null;
+let currentLetterY = null;
+let currentLetterColor = null;
 let nextLetterX = null;
 let nextLetterY = null;
+let justHideMenu = false;
 
 class Game extends Component {
   wordsToWrite = [];
@@ -31,6 +36,7 @@ class Game extends Component {
 
   constructor(props) {
     super(props);
+    // this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
 
     this.loadMusic();
 
@@ -45,12 +51,20 @@ class Game extends Component {
     }
   }
 
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
+  handleBackButtonClick = () => {
+    this.displayMenu();
+    return true;
+  }
+
   componentDidUpdate() {
-    music.getStatusAsync().then((musicStatus) => {
-      if (!this.state.starting && !this.state.gameOver && !musicStatus.isPlaying) {
-        this.startMusic();
-      }
-    });
+    this.startMusic();
+    if (!this.state.starting) {
+      BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
   }
 
   loadMusic = async () => {
@@ -63,12 +77,12 @@ class Game extends Component {
     }
   }
 
-  startMusic = async () => {
-    try {
-      await music.playAsync();
-    } catch (error) {
-      
-    }
+   async startMusic () {
+      music.getStatusAsync().then((musicStatus) => {
+        if (!this.state.starting && !this.state.gameOver && !musicStatus.isPlaying) {
+          music.playAsync();
+        }
+      });
   }
 
   resetMusic = async () => {
@@ -126,7 +140,8 @@ class Game extends Component {
       letterIndex: 0,
       hp: 5,
       gameOver: false,
-      starting: true
+      starting: true,
+      displayMenu: false
     };
     this.loadNewSentence(constructing);
   }
@@ -328,6 +343,7 @@ class Game extends Component {
   }
 
   backToHome = () => {
+    this.stopMusic();
     this.props.backToHome();
   }
 
@@ -365,43 +381,53 @@ class Game extends Component {
   }
 
   createLetter = (letterOfComponent, posX = 'random', posY = 'random', color = 'yellow', hps = undefined) => {
-    posX = this.getPosX(posX);
-    posY = this.getPosY(posY);
+    if ((this.state.displayMenu || justHideMenu) && currentLetterColor) {
+      color = currentLetterColor;
+      hps = currentLetterHps;
+    }
+
+    currentLetterX = this.getPosX(posX);
+    currentLetterY = this.getPosY(posY);
+    currentLetterColor = color;
+    currentLetterHps = hps;
 
     let letterComponent = '';
     switch(color) {
       case 'yellow':
         letterComponent = <YellowLetter 
           letter={letterOfComponent} 
-          posX={posX} 
-          posY={posY} 
+          posX={currentLetterX} 
+          posY={currentLetterY} 
           enterLetter={this.enterLetter}
           loseHP={this.loseHP}
           changeScore={this.changeScore}
           key={'YellowLetter-' + this.letterIndex}
+          isPaused={this.state.displayMenu}
         />
         break;
       case 'red':
         letterComponent = <RedLetter 
           letter={letterOfComponent} 
-          posX={posX} 
-          posY={posY} 
+          posX={currentLetterX} 
+          posY={currentLetterY} 
           enterLetter={this.enterLetter}
           loseHP={this.loseHP}
           changeScore={this.changeScore}
           key={'RedLetter-' + this.letterIndex}
+          isPaused={this.state.displayMenu}
         />
         break;
       case 'blue':
         letterComponent = <BlueLetter 
           letter={letterOfComponent} 
-          posX={posX} 
-          posY={posY} 
+          posX={currentLetterX} 
+          posY={currentLetterY} 
           enterLetter={this.enterLetter}
           loseHP={this.loseHP}
           changeScore={this.changeScore}
           key={'BlueLetter-' + this.letterIndex}
           hps={hps}
+          isPaused={this.state.displayMenu}
         />
         break;
     }
@@ -479,11 +505,18 @@ class Game extends Component {
   }
 
   createLetterAndNext = (letterOfComponent, posX = 'random', posY = 'random', color = 'yellow', hps = undefined, nextPosX = 'random', nextPosY = 'random') => {
-    if (nextLetterX) {
-      posX = nextLetterX;
-    }
-    if (nextLetterY) {
-      posY = nextLetterY;
+    if (this.state.displayMenu || justHideMenu) {
+      posX = currentLetterX;
+      posY = currentLetterY;
+      nextPosX = nextLetterX;
+      nextPosY = nextLetterY;
+    } else {
+      if (nextLetterX) {
+        posX = nextLetterX;
+      }
+      if (nextLetterY) {
+        posY = nextLetterY;
+      }
     }
 
     posX = this.getPosX(posX);
@@ -499,10 +532,36 @@ class Game extends Component {
     ];
   }
 
+  menuIsNowHidden = () => {
+    justHideMenu = false;
+  }
+
+  menuJustHidden = () => {
+    justHideMenu = true;
+  }
+
   gameStarted = () => {
     this.setState({
       starting: false
     })
+  }
+
+  pauseGame = () => {
+
+  }
+
+  continueGame = () => {
+    this.setState({
+      displayMenu: false
+    });
+    this.menuJustHidden();
+  }
+
+  displayMenu = () => {
+    this.pauseGame();
+    this.setState({
+      displayMenu: true
+    });
   }
 
   render() {
@@ -514,6 +573,8 @@ class Game extends Component {
       );
     }
 
+    this.startMusic();
+
     if (this.state.gameOver) {
       return (
         <GameOver
@@ -524,8 +585,8 @@ class Game extends Component {
       );
     }
 
-    let letter = null;
-    let nextLetter = null;
+    let letter;
+    let nextLetter;
     let wordToWrite = [];
 
     // For BlueLetter
@@ -551,6 +612,19 @@ class Game extends Component {
       [letter, nextLetter] = this.createLetterAndNext(this.state.wordToWrite[this.state.letterIndex], 'random', 'random', color, hps);
     }
 
+    let menu;
+
+    if (this.state.displayMenu) {
+      menu = <GameMenu
+        backToHome={this.backToHome}
+        continueGame={this.continueGame}
+      />
+    }
+
+    if (justHideMenu) {
+      this.menuIsNowHidden();
+    }
+
     return (
       <View style={[style.gameContainer]}>
         <View style={[style.hud]}>
@@ -572,6 +646,8 @@ class Game extends Component {
         <View style={[style.wordToWrite]}>
           {this.state.lettersEntered}
         </View>
+
+        {menu}
       </View>
     )
   }

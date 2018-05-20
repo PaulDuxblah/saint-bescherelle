@@ -35,6 +35,10 @@ class YellowLetter extends Component {
         this.tooLate();
       }
     });
+
+    if (this.props.isPaused) {
+      this.state.animatedValue.stopAnimation();
+    }
   }
 
   render() {
