@@ -36,7 +36,6 @@ class Game extends Component {
 
   constructor(props) {
     super(props);
-    // this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
 
     this.loadMusic();
 
