@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 
 import style from '../../style';
-
-const { height, width } = Dimensions.get('window');
 
 class GameMenu extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      
-    }
   }
 
   backToHome = () => {
